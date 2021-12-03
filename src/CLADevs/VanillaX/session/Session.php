@@ -27,9 +27,6 @@ class Session{
 
     private Player $player;
 
-    private ?VanillaEntity $ridingEntity = null;
-    private ?VillagerEntity $tradingEntity = null;
-
     public function __construct(Player $player){
         $this->player = $player;
         $this->entityId = $player->getId();
@@ -50,28 +47,6 @@ class Session{
 
     public function getPlayer(): Player{
         return $this->player;
-    }
-
-    public function getRidingEntity(): ?VanillaEntity{
-        return $this->ridingEntity;
-    }
-
-    public function setRidingEntity(?VanillaEntity $ridingEntity): void{
-        if($ridingEntity !== null && $this->ridingEntity instanceof EntityRidable){
-            $this->ridingEntity->onLeftRide($this->player);
-        }
-        $this->ridingEntity = $ridingEntity;
-    }
-    
-    public function getTradingEntity(): ?VillagerEntity{
-        return $this->tradingEntity;
-    }
-
-    public function setTradingEntity(?VillagerEntity $tradingEntity, bool $onQuit = false): void{
-        if($onQuit && $this->tradingEntity !== null && $tradingEntity === null){
-            $this->tradingEntity->setCustomer(null);
-        }
-        $this->tradingEntity = $tradingEntity;
     }
 
     public function isGliding(): bool{

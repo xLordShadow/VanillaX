@@ -24,7 +24,6 @@ class VanillaX extends PluginBase{
     private EnchantmentManager $enchantmentManager;
     private BlockManager $blockManager;
     private SessionManager $sessionManager;
-    private CommandManager $commandManager;
     private NetworkManager $networkManager;
     private InventoryManager $inventoryManager;
     private ListenerManager $listenerManager;
@@ -38,7 +37,6 @@ class VanillaX extends PluginBase{
         $this->enchantmentManager = new EnchantmentManager();
         $this->blockManager = new BlockManager();
         $this->sessionManager = new SessionManager();
-        $this->commandManager = new CommandManager();
         $this->networkManager = new NetworkManager();
         $this->inventoryManager = new InventoryManager();
         $this->listenerManager = new ListenerManager();
@@ -53,7 +51,6 @@ class VanillaX extends PluginBase{
         $this->entityManager->startup();
         $this->blockManager->startup();
         $this->itemManager->startup();
-        $this->commandManager->startup();
         $this->networkManager->startup();
         $this->listenerManager->startup();
         $this->worldManager->startup();
@@ -101,9 +98,5 @@ class VanillaX extends PluginBase{
 
     public function getInventoryManager(): InventoryManager{
         return $this->inventoryManager;
-    }
-
-    public function getCommandManager(): CommandManager{
-        return $this->commandManager;
     }
 }

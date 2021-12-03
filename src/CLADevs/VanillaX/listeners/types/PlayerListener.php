@@ -44,7 +44,6 @@ class PlayerListener implements Listener{
         $player = $event->getPlayer();
         $weather = WeatherManager::getInstance();
 
-        GameRuleManager::getInstance()->sendChanges($player);
         if($weather->isRaining($player->getWorld())) $weather->sendWeather($player, $weather->isThundering($player->getWorld()));
         VanillaX::getInstance()->getSessionManager()->add($player);
     }
@@ -59,7 +58,6 @@ class PlayerListener implements Listener{
                 $entity->onCollideWithPlayer($player);
             }
         }
-        $session->setTradingEntity(null, true);
         $manager->remove($player);
     }
 
@@ -114,17 +112,6 @@ class PlayerListener implements Listener{
         }
     }
 
-    public function onDeath(PlayerDeathEvent $event): void{
-        $player = $event->getPlayer();
-
-        if(GameRuleManager::getInstance()->getValue(GameRule::KEEP_INVENTORY, ($level = $player->getWorld()))){
-            $event->setKeepInventory(true);
-        }
-        if(!GameRuleManager::getInstance()->getValue(GameRule::SHOW_DEATH_MESSAGES, $level)){
-            $event->setDeathMessage("");
-        }
-    }
-
     public function onBedLeave(PlayerBedLeaveEvent $event): void{
         $player = $event->getPlayer();
 
@@ -172,23 +159,6 @@ class PlayerListener implements Listener{
                 if($player->getLocation()->pitch >= -40 && $player->getLocation()->pitch <= 30){
                     $player->resetFallDistance();
                 }
-            }
-        }
-    }
-
-    public function onChangeSlot(PlayerItemHeldEvent $event): void{
-        if(!$event->isCancelled()){
-            $player = $event->getPlayer();
-            $session = VanillaX::getInstance()->getSessionManager()->get($player);
-            $entity = $session->getRidingEntity();
-            $oldItem = $player->getInventory()->getItemInHand();
-            $newItem = $event->getItem();
-
-            if($entity instanceof HeldItemChangeTrait){
-                $entity->onSlotChange($player, $oldItem, $newItem);
-            }
-            if($newItem instanceof HeldItemChangeTrait){
-                $newItem->onSlotChange($player, $oldItem, $newItem);
             }
         }
     }

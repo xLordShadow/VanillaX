@@ -5,8 +5,6 @@ namespace CLADevs\VanillaX\listeners\types;
 use CLADevs\VanillaX\blocks\block\TwistingVinesBlock;
 use CLADevs\VanillaX\items\ItemIdentifiers;
 use CLADevs\VanillaX\items\types\ShieldItem;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use CLADevs\VanillaX\VanillaX;
 use CLADevs\VanillaX\world\sounds\ShieldBlockSound;
 use pocketmine\entity\Entity;
@@ -31,25 +29,8 @@ class EntityListener implements Listener{
                 case EntityDamageEvent::CAUSE_FALL:
                     if($this->handleFallDamage($entity)) $event->cancel();
                     break;
-                case EntityDamageEvent::CAUSE_DROWNING:
-                    /** If gamerule 'drowningDamage' is not on then cancel it */
-                    if(!GameRuleManager::getInstance()->getValue(GameRule::DROWNING_DAMAGE, $entity->getWorld())){
-                        $event->cancel();
-                    }
-                    break;
-                case EntityDamageEvent::CAUSE_FIRE:
-                    /** If gamerule 'fireDamage' is not on then cancel it */
-                    if(!GameRuleManager::getInstance()->getValue(GameRule::FIRE_DAMAGE, $entity->getWorld())){
-                        $event->cancel();
-                    }
-                    break;
                 case EntityDamageEvent::CAUSE_ENTITY_ATTACK:
                     if($event instanceof EntityDamageByEntityEvent && $entity instanceof Player){
-                        /** If gamerule 'pvp' is not on then cancel it */
-                        if(!GameRuleManager::getInstance()->getValue(GameRule::PVP, $entity->getWorld())){
-                            $event->cancel();
-                            return;
-                        }
                         $item = $entity->getInventory()->getItemInHand();
                         if($entity->isSneaking() && $this->handleShieldDamage($event->getDamager(), $entity, $item)){
                             $event->cancel();
@@ -72,20 +53,6 @@ class EntityListener implements Listener{
                 }
                 $event->setKnockBack($event->getKnockBack() / $resist);
             }
-        }
-    }
-
-    public function onRegenerateHealth(EntityRegainHealthEvent $event): void{
-        if(!$event->isCancelled() && !GameRuleManager::getInstance()->getValue(GameRule::NATURAL_REGENERATION, $event->getEntity()->getWorld())){
-            $event->cancel();
-        }
-    }
-
-    public function onEntitySpawn(EntitySpawnEvent $event): void{
-        $entity = $event->getEntity();
-
-        if($entity instanceof PrimedTNT && !GameRuleManager::getInstance()->getValue(GameRule::TNT_EXPLODES, $entity->getWorld())){
-            $entity->flagForDespawn();
         }
     }
 
@@ -125,10 +92,7 @@ class EntityListener implements Listener{
     private function handleFallDamage(Entity $entity): bool{
         $cancel = false;
 
-        /** If gamerule 'fallDamage' is not on then cancel it */
-        if(!GameRuleManager::getInstance()->getValue(GameRule::FALL_DAMAGE, $entity->getWorld())){
-            $cancel = true;
-        }elseif($entity instanceof Player && $entity->getPosition()->getWorld()->getBlock($entity->getPosition()->subtract(0, 1, 0)) instanceof TwistingVinesBlock){
+        if($entity instanceof Player && $entity->getPosition()->getWorld()->getBlock($entity->getPosition()->subtract(0, 1, 0)) instanceof TwistingVinesBlock){
             $cancel = true;
         }
         return $cancel;

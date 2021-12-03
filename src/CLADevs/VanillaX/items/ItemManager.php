@@ -22,6 +22,7 @@ use pocketmine\item\ItemIds;
 use pocketmine\item\SpawnEgg;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\Server;
 use pocketmine\world\World;
 use const pocketmine\RESOURCE_PATH;
@@ -52,19 +53,19 @@ class ItemManager{
         }
 
         $musicDics = [
-            "13" => LevelSoundEventPacket::SOUND_RECORD_13,
-            "cat" => LevelSoundEventPacket::SOUND_RECORD_CAT,
-            "blocks" => LevelSoundEventPacket::SOUND_RECORD_BLOCKS,
-            "chrip" => LevelSoundEventPacket::SOUND_RECORD_CHIRP,
-            "far" => LevelSoundEventPacket::SOUND_RECORD_FAR,
-            "mall" => LevelSoundEventPacket::SOUND_RECORD_MALL,
-            "mellohi" => LevelSoundEventPacket::SOUND_RECORD_MELLOHI,
-            "stal" => LevelSoundEventPacket::SOUND_RECORD_STAL,
-            "strad" => LevelSoundEventPacket::SOUND_RECORD_STRAD,
-            "ward" => LevelSoundEventPacket::SOUND_RECORD_WARD,
-            "11" => LevelSoundEventPacket::SOUND_RECORD_11,
-            "wait" => LevelSoundEventPacket::SOUND_RECORD_WAIT,
-            "Pigstep" => LevelSoundEventPacket::SOUND_RECORD_PIGSTEP
+            "13" => LevelSoundEvent::RECORD_13,
+            "cat" => LevelSoundEvent::RECORD_CAT,
+            "blocks" => LevelSoundEvent::RECORD_BLOCKS,
+            "chrip" => LevelSoundEvent::RECORD_CHIRP,
+            "far" => LevelSoundEvent::RECORD_FAR,
+            "mall" => LevelSoundEvent::RECORD_MALL,
+            "mellohi" => LevelSoundEvent::RECORD_MELLOHI,
+            "stal" => LevelSoundEvent::RECORD_STAL,
+            "strad" => LevelSoundEvent::RECORD_STRAD,
+            "ward" => LevelSoundEvent::RECORD_WARD,
+            "11" => LevelSoundEvent::RECORD_11,
+            "wait" => LevelSoundEvent::RECORD_WAIT,
+            "Pigstep" => LevelSoundEvent::RECORD_PIGSTEP
         ];
         $startId = 500;
         foreach($musicDics as $name => $soundId){
@@ -74,27 +75,6 @@ class ItemManager{
                 self::register(new MusicDiscItem($startId, "C418 - " . $name, $soundId));
             }
             $startId++;
-        }
-
-        /** Spawn Egg */
-        foreach(EntityManager::getInstance()->getEntities() as $entity){
-            if(in_array($entity->getType(), [EntityIdentifierX::TYPE_MONSTER, EntityIdentifierX::TYPE_NEUTRAL, EntityIdentifierX::TYPE_PASSIVE])){
-                ItemFactory::getInstance()->register($item = new class(new ItemIdentifier(ItemIds::SPAWN_EGG, $entity->getId()), $entity->getName() . " Spawn Egg", $entity->getNamespace()) extends SpawnEgg{
-                    private string $namespace;
-
-                    public function __construct(ItemIdentifier $identifier, string $name = "Unknown", string $namespace = ""){
-                        parent::__construct($identifier, $name);
-                        $this->namespace = $namespace;
-                    }
-
-                    public function createEntity(World $world, Vector3 $pos, float $yaw, float $pitch): Entity{
-                        return new $this->namespace(Location::fromObject($pos, $world, $yaw, $pitch));
-                    }
-                }, true);
-                if(!CreativeInventory::getInstance()->contains($item)){
-                    CreativeInventory::getInstance()->add($item);
-                }
-            }
         }
         $this->initializeCreativeItems();
     }

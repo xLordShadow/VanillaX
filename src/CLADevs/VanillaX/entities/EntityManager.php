@@ -42,10 +42,6 @@ class EntityManager{
 
         if(VanillaX::getInstance()->getConfig()->get("entities", true)){
             $pathList = ["object", "projectile"];
-
-            if(VanillaX::getInstance()->getConfig()->get("mobs", true)){
-                $pathList = array_merge($pathList, ["boss"]);
-            }
             foreach($pathList as $path){
                 Utils::callDirectory("entities" . DIRECTORY_SEPARATOR . $path, function (string $namespace)use($path): void{
                     $implements = class_implements($namespace);
