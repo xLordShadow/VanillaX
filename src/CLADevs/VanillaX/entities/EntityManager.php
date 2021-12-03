@@ -44,7 +44,7 @@ class EntityManager{
             $pathList = ["object", "projectile"];
 
             if(VanillaX::getInstance()->getConfig()->get("mobs", true)){
-                $pathList = array_merge($pathList, ["boss", "passive", "neutral", "monster"]);
+                $pathList = array_merge($pathList, ["boss"]);
             }
             foreach($pathList as $path){
                 Utils::callDirectory("entities" . DIRECTORY_SEPARATOR . $path, function (string $namespace)use($path): void{
@@ -77,35 +77,6 @@ class EntityManager{
         $networkId = $namespace::NETWORK_ID;
         $key = array_search($networkId, $entityIds);
         $id = $entityLegacyIds[$key] ?? null;
-
-        if($id === null){
-            switch($networkId){
-                case GlowSquidEntity::NETWORK_ID:
-                    $key = "GLOW_SQUID";
-                    $id = VanillaEntity::GLOW_SQUID;
-                    break;
-                case GoatEntity::NETWORK_ID:
-                    $key = "GOAT";
-                    $id = VanillaEntity::GOAT;
-                    break;
-                case AxolotlEntity::NETWORK_ID:
-                    $key = "AXOLOTL";
-                    $id = VanillaEntity::AXOLOTL;
-                    break;
-                case PiglinBruteEntity::NETWORK_ID:
-                    $key = "PIGLIN_BRUTE";
-                    $id = VanillaEntity::PIGLIN_BRUTE;
-                    break;
-                case StriderEntity::NETWORK_ID:
-                    $key = "STRIDER";
-                    $id = VanillaEntity::STRIDER;
-                    break;
-                case VillagerEntity::NETWORK_ID:
-                    $key = "VILLAGER";
-                    $id = VanillaEntity::VILLAGER_V2;
-                    break;
-            }
-        }
 
         if($id !== null && $key !== false){
             $entityName = [];

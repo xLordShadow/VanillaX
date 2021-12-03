@@ -45,7 +45,6 @@ class TypeConverterX extends TypeConverter{
                         $foundSlot = false;
                         $anvilSlot = UIInventorySlotOffset::ANVIL[$action->inventorySlot] ?? null;
                         $enchantingTableSlot = UIInventorySlotOffset::ENCHANTING_TABLE[$action->inventorySlot] ?? null;
-                        $tradeSlot = UIInventorySlotOffset::TRADE2_INGREDIENT[$action->inventorySlot] ?? null;
                         $beaconPaymentSlot = $action->inventorySlot === UIInventorySlotOffset::BEACON_PAYMENT ? 0 : null;
 
                         switch($currentWindow->getNetworkType()){
@@ -58,12 +57,6 @@ class TypeConverterX extends TypeConverter{
                             case WindowTypes::ENCHANTMENT:
                                 if($enchantingTableSlot !== null){
                                     $action->inventorySlot = $enchantingTableSlot;
-                                    $foundSlot = true;
-                                }
-                                break;
-                            case WindowTypes::TRADING:
-                                if($tradeSlot !== null){
-                                    $action->inventorySlot = $tradeSlot;
                                     $foundSlot = true;
                                 }
                                 break;
@@ -111,15 +104,6 @@ class TypeConverterX extends TypeConverter{
                             case self::SOURCE_TYPE_ENCHANT_MATERIAL:
                             case self::SOURCE_TYPE_ENCHANT_INPUT:
                                 return new EnchantItemAction($oldItem, $newItem, $action->windowId);
-                        }
-                        break;
-                    case WindowTypes::TRADING:
-                        switch($action->windowId){
-                            case self::SOURCE_TYPE_TRADE_INPUT:
-                            case self::SOURCE_TYPE_TRADE_OUTPUT:
-                                $action->inventorySlot = $action->windowId === self::SOURCE_TYPE_TRADE_OUTPUT ? 1 : 0;
-                                $action->windowId = $currentWindowId;
-                                return new TradeItemAction($oldItem, $newItem);
                         }
                         break;
                     case WindowTypes::SMITHING_TABLE:

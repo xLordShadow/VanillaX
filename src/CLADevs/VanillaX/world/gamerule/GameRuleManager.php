@@ -27,34 +27,34 @@ class GameRuleManager{
     
     public function __construct(){
         self::setInstance($this);
-        $this->register(new GameRule(GameRule::COMMAND_BLOCKS_ENABLED, true)); //TODO
-        $this->register(new GameRule(GameRule::COMMAND_BLOCK_OUTPUT, true)); //TODO
-        $this->register(new DoDayLightCycleRule());
-        $this->register(new GameRule(GameRule::DO_ENTITY_DROPS, true));
-        $this->register(new GameRule(GameRule::DO_FIRE_TICK, true));
-        $this->register(new GameRule(GameRule::DO_INSOMNIA, true)); //TODO
-        $this->register(new GameRule(GameRule::DO_IMMEDIATE_RESPAWN, false));
-        $this->register(new GameRule(GameRule::DO_MOB_LOOT, true));
-        $this->register(new GameRule(GameRule::DO_MOB_SPAWNING, true)); //TODO
-        $this->register(new GameRule(GameRule::DO_TILE_DROPS, true));
-        $this->register(new DoWeatherCycleRule());
-        $this->register(new GameRule(GameRule::DROWNING_DAMAGE, true));
-        $this->register(new GameRule(GameRule::FALL_DAMAGE, true));
-        $this->register(new GameRule(GameRule::FIRE_DAMAGE, true));
-        $this->register(new GameRule(GameRule::FREEZE_DAMAGE, true)); //TODO
-        $this->register(new GameRule(GameRule::FUNCTION_COMMAND_LIMIT, 10000, GameRule::TYPE_INT)); //TODO
-        $this->register(new GameRule(GameRule::KEEP_INVENTORY, false));
-        $this->register(new GameRule(GameRule::MAX_COMMAND_CHAIN_LENGTH, 65536, GameRule::TYPE_INT)); //TODO
-        $this->register(new GameRule(GameRule::MOB_GRIEFING, true)); //TODO
-        $this->register(new GameRule(GameRule::NATURAL_REGENERATION, true));
-        $this->register(new GameRule(GameRule::PVP, true));
-        $this->register(new GameRule(GameRule::RANDOM_TICK_SPEED, 1, GameRule::TYPE_INT)); //TODO
-        $this->register(new GameRule(GameRule::SEND_COMMAND_FEEDBACK, true)); //TODO
-        $this->register(new GameRule(GameRule::SHOW_COORDINATES, false));
-        $this->register(new GameRule(GameRule::SHOW_DEATH_MESSAGES, true)); //TODO
-        $this->register(new GameRule(GameRule::SPAWN_RADIUS, 5, GameRule::TYPE_INT)); //TODO
-        $this->register(new GameRule(GameRule::TNT_EXPLODES, true));
-        $this->register(new GameRule(GameRule::SHOW_TAGS, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::COMMAND_BLOCKS_ENABLED, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::COMMAND_BLOCK_OUTPUT, true)); //TODO
+        $this->registerRule(new DoDayLightCycleRule());
+        $this->registerRule(new GameRule(GameRule::DO_ENTITY_DROPS, true));
+        $this->registerRule(new GameRule(GameRule::DO_FIRE_TICK, true));
+        $this->registerRule(new GameRule(GameRule::DO_INSOMNIA, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::DO_IMMEDIATE_RESPAWN, false));
+        $this->registerRule(new GameRule(GameRule::DO_MOB_LOOT, true));
+        $this->registerRule(new GameRule(GameRule::DO_MOB_SPAWNING, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::DO_TILE_DROPS, true));
+        $this->registerRule(new DoWeatherCycleRule());
+        $this->registerRule(new GameRule(GameRule::DROWNING_DAMAGE, true));
+        $this->registerRule(new GameRule(GameRule::FALL_DAMAGE, true));
+        $this->registerRule(new GameRule(GameRule::FIRE_DAMAGE, true));
+        $this->registerRule(new GameRule(GameRule::FREEZE_DAMAGE, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::FUNCTION_COMMAND_LIMIT, 10000, GameRule::TYPE_INT)); //TODO
+        $this->registerRule(new GameRule(GameRule::KEEP_INVENTORY, false));
+        $this->registerRule(new GameRule(GameRule::MAX_COMMAND_CHAIN_LENGTH, 65536, GameRule::TYPE_INT)); //TODO
+        $this->registerRule(new GameRule(GameRule::MOB_GRIEFING, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::NATURAL_REGENERATION, true));
+        $this->registerRule(new GameRule(GameRule::PVP, true));
+        $this->registerRule(new GameRule(GameRule::RANDOM_TICK_SPEED, 1, GameRule::TYPE_INT)); //TODO
+        $this->registerRule(new GameRule(GameRule::SEND_COMMAND_FEEDBACK, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::SHOW_COORDINATES, false));
+        $this->registerRule(new GameRule(GameRule::SHOW_DEATH_MESSAGES, true)); //TODO
+        $this->registerRule(new GameRule(GameRule::SPAWN_RADIUS, 5, GameRule::TYPE_INT)); //TODO
+        $this->registerRule(new GameRule(GameRule::TNT_EXPLODES, true));
+        $this->registerRule(new GameRule(GameRule::SHOW_TAGS, true)); //TODO
 
         if(!$this->isEnabled() && VanillaX::getInstance()->getConfig()->get("gamerule-remove-cache", true)){
             foreach(Server::getInstance()->getWorldManager() as $world){
@@ -93,7 +93,7 @@ class GameRuleManager{
         }
     }
 
-    private function register(GameRule $rule): void{
+    private function registerRule(GameRule $rule): void{
         $this->gameRules[strtolower($rule->getName())] = $rule;
     }
 

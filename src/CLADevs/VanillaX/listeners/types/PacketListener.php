@@ -32,7 +32,6 @@ use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\CommandBlockUpdatePacket;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
 use pocketmine\network\mcpe\protocol\CraftingDataPacket;
-use pocketmine\network\mcpe\protocol\EmotePacket;
 use pocketmine\network\mcpe\protocol\InteractPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
@@ -132,9 +131,6 @@ class PacketListener implements Listener{
                     break;
                 case ProtocolInfo::ACTOR_PICK_REQUEST_PACKET:
                     if($packet instanceof ActorPickRequestPacket) $this->handleActorPickRequest($player, $packet);
-                    break;
-                case ProtocolInfo::EMOTE_PACKET:
-                    if($packet instanceof EmotePacket) $this->handleEmote($player, $packet);
                     break;
             }
         }
@@ -266,17 +262,6 @@ class PacketListener implements Listener{
             if(!$ev->isCancelled()){
                 $player->getInventory()->setItemInHand($ev->getResultItem());
             }
-        }
-    }
-
-    /**
-     * @param Player $player
-     * @param EmotePacket $packet
-     * This is called whenever player emotes
-     */
-    private function handleEmote(Player $player, EmotePacket $packet): void{
-        foreach($player->getViewers() as $viewer){
-            $viewer->getNetworkSession()->sendDataPacket($packet);
         }
     }
 

@@ -159,7 +159,7 @@ class BlockManager{
         $this->registerDoors();
         $this->registerFence();
         $this->registerStairs();
-        $this->registerCommandBlock();
+        //$this->registerCommandBlock();
 
         self::registerBlock(new Block(new BlockIdentifier(BlockLegacyIds::SLIME_BLOCK, 0), "Slime", new BlockBreakInfo(0)));
         self::registerBlock(new Block(new BlockIdentifier(BlockVanilla::ANCIENT_DEBRIS, 0, ItemIdentifiers::ANCIENT_DEBRIS), "Ancient Debris", new BlockBreakInfo(5.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 6000.0)));
