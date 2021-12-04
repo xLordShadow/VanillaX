@@ -4,8 +4,6 @@ namespace CLADevs\VanillaX\entities\object;
 
 use CLADevs\VanillaX\utils\entity\CustomRegisterEntityNamesTrait;
 use CLADevs\VanillaX\utils\entity\CustomRegisterEntityTrait;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use CLADevs\VanillaX\utils\item\NonAutomaticCallItemTrait;
 use Closure;
 use pocketmine\data\bedrock\EntityLegacyIds;
@@ -71,10 +69,6 @@ class PaintingEntity extends Painting implements CustomRegisterEntityTrait , Cus
             if($killer instanceof Player && $killer->isCreative()){
                 $drops = false;
             }
-        }
-
-        if($drops && GameRuleManager::getInstance()->getValue(GameRule::DO_ENTITY_DROPS, $this->getWorld())){
-            $this->getWorld()->dropItem($this->getPosition(), ItemFactory::getInstance()->get(ItemIds::PAINTING));
         }
         $this->getWorld()->addParticle($this->getPosition()->add(0.5, 0.5, 0.5), new BlockBreakParticle(BlockFactory::getInstance()->get(BlockLegacyIds::PLANKS)));
     }

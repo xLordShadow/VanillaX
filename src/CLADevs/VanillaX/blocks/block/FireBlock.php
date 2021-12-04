@@ -3,8 +3,6 @@
 namespace CLADevs\VanillaX\blocks\block;
 
 use CLADevs\VanillaX\utils\item\NonCreativeItemTrait;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use pocketmine\block\BlockBreakInfo;
 use pocketmine\block\BlockIdentifier;
 use pocketmine\block\BlockLegacyIds;
@@ -17,9 +15,6 @@ class FireBlock extends Fire implements NonCreativeItemTrait{
     }
 
     public function onRandomTick(): void{
-        if(!GameRuleManager::getInstance()->getValue(GameRule::DO_FIRE_TICK, $this->getPosition()->getWorld())){
-            return;
-        }
         parent::onRandomTick();
     }
 }

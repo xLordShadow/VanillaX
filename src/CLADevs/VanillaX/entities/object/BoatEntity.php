@@ -2,8 +2,6 @@
 
 namespace CLADevs\VanillaX\entities\object;
 
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\item\ItemFactory;
@@ -21,9 +19,6 @@ class BoatEntity extends Entity{
     const NETWORK_ID = EntityIds::BOAT;
 
     public function kill(): void{
-        if(GameRuleManager::getInstance()->getValue(GameRule::DO_ENTITY_DROPS, $this->getWorld())){
-            $this->getWorld()->dropItem($this->getPosition(), ItemFactory::getInstance()->get(ItemIds::BOAT)); //TODO boat block
-        }
         parent::kill();
     }
 

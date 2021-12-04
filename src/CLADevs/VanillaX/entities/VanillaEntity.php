@@ -3,8 +3,6 @@
 namespace CLADevs\VanillaX\entities;
 
 use CLADevs\VanillaX\entities\utils\interfaces\EntityClassification;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Living;
@@ -93,12 +91,6 @@ abstract class VanillaEntity extends Living{
     protected function onDeath(): void{
         $ev = new EntityDeathEvent($this, $this->getDrops(), $this->getXpDropAmount());
         $ev->call();
-        if(GameRuleManager::getInstance()->getValue(GameRule::DO_MOB_LOOT, $this->getWorld())){
-            foreach($ev->getDrops() as $item){
-                $this->getWorld()->dropItem($this->getPosition(), $item);
-            }
-            $this->getWorld()->dropExperience($this->getPosition(), $ev->getXpDropAmount());
-        }
     }
 
     protected function sendSpawnPacket(Player $player): void{

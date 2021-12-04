@@ -4,8 +4,6 @@ namespace CLADevs\VanillaX\entities\object;
 
 use CLADevs\VanillaX\entities\utils\traits\EntityContainer;
 use CLADevs\VanillaX\inventories\FakeBlockInventory;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -38,11 +36,6 @@ use EntityContainer;
     }
 
     public function kill(): void{
-        if(GameRuleManager::getInstance()->getValue(GameRule::DO_ENTITY_DROPS, $this->getWorld())){
-            foreach(array_merge($this->getContents(), [ItemFactory::getInstance()->get(ItemIds::MINECART_WITH_HOPPER)]) as $item){
-                $this->getWorld()->dropItem($this->getPosition(), $item);
-            }
-        }
         parent::kill();
     }
 

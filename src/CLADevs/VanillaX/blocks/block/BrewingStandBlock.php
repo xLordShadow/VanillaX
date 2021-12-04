@@ -16,6 +16,7 @@ use pocketmine\item\ItemIds;
 use pocketmine\item\ToolTier;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\player\Player;
 
 class BrewingStandBlock extends BrewingStand{
@@ -70,7 +71,7 @@ class BrewingStandBlock extends BrewingStand{
                 }
                 $inventory->decreaseIngredient();
                 $tile->setFuelAmount($tile->getFuelAmount() - 1, true);
-                $tile->getPosition()->getWorld()->broadcastPacketToViewers($tile->getPosition(), LevelSoundEventPacket::create(LevelSoundEventPacket::SOUND_POTION_BREWED, $tile->getPosition()));
+                $tile->getPosition()->getWorld()->broadcastPacketToViewers($tile->getPosition(), LevelSoundEventPacket::nonActorSound(LevelSoundEvent::POTION_BREWED, $tile->getPosition(), false));
 
                 if($tile->getFuelAmount() <= 0 && !$inventory->getFuel()->isNull()){
                     $inventory->decreaseFuel();

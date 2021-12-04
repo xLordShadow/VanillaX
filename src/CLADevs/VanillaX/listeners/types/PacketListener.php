@@ -2,13 +2,11 @@
 
 namespace CLADevs\VanillaX\listeners\types;
 
-use CLADevs\VanillaX\blocks\tile\CommandBlockTile;
 use CLADevs\VanillaX\entities\utils\EntityInteractResult;
 use CLADevs\VanillaX\entities\utils\interfaces\EntityInteractable;
 use CLADevs\VanillaX\entities\utils\interfaces\EntityRidable;
 use CLADevs\VanillaX\inventories\FakeBlockInventory;
 use CLADevs\VanillaX\inventories\InventoryManager;
-use CLADevs\VanillaX\inventories\types\TradeInventory;
 use CLADevs\VanillaX\listeners\ListenerManager;
 use CLADevs\VanillaX\session\Session;
 use CLADevs\VanillaX\utils\instances\InteractButtonResult;
@@ -67,9 +65,6 @@ class PacketListener implements Listener{
         if(!$event->isCancelled()){
             foreach($event->getPackets() as $packet){
                 switch($packet::NETWORK_ID){
-                    case ProtocolInfo::AVAILABLE_COMMANDS_PACKET:
-                        if($packet instanceof AvailableCommandsPacket) $this->handleCommandEnum($packet);
-                        break;
                     case ProtocolInfo::CRAFTING_DATA_PACKET:
                         if($packet instanceof CraftingDataPacket) $this->handleCraftingData($packet);
                         break;
@@ -117,31 +112,7 @@ class PacketListener implements Listener{
                         $player->getWorld()->setDifficulty($packet->difficulty);
                     }
                     break;
-                case ProtocolInfo::CONTAINER_CLOSE_PACKET:
-                    /** Fixes Trading GUI issue */
-                    if($packet instanceof ContainerClosePacket && $packet->windowId === 255){
-                        $inv = $player->getCurrentWindow();
-
-                        if($inv instanceof TradeInventory){
-                            $player->removeCurrentWindow();
-                        }
-                    }
-                    break;
             }
-        }
-    }
-
-    /**
-     * @param Player $player
-     * @param CommandBlockUpdatePacket $packet
-     * Changes server sided command block tile data
-     */
-    private function handleCommandBlock(Player $player, CommandBlockUpdatePacket $packet): void{
-        $position = new Position($packet->x, $packet->y, $packet->z, $player->getWorld());
-        $tile = $position->getWorld()->getTile($position);
-
-        if($tile instanceof CommandBlockTile){
-            $tile->handleCommandBlockUpdateReceive($packet);
         }
     }
 

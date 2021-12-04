@@ -3,11 +3,10 @@
 namespace CLADevs\VanillaX\world\weather;
 
 use CLADevs\VanillaX\entities\object\LightningBoltEntity;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use CLADevs\VanillaX\VanillaX;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
+use pocketmine\network\mcpe\protocol\types\LevelEvent;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
@@ -28,41 +27,6 @@ class WeatherManager{
         if(!VanillaX::getInstance()->getConfig()->getNested("features.weather", true)){
             return;
         }
-        foreach(Server::getInstance()->getWorldManager()->getWorlds() as $world){
-            if(!GameRuleManager::getInstance()->getValue(GameRule::DO_WEATHER_CYCLE, $world)){
-                continue;
-            }
-            $this->addWeather($world);
-        }
-        VanillaX::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function(): void{
-            foreach($this->weathers as $weather){
-                if($weather->isRaining()){
-                    $weather->duration--;
-
-                    if($weather->duration < 1){
-                        $weather->stopStorm();
-                    }elseif($weather->isThundering() && mt_rand(1, 100000) === 0){
-                        $players = Server::getInstance()->getOnlinePlayers();
-
-                        if(count($players) >= 1){
-                            $random = $players[array_rand($players)];
-                            $location = $random->getLocation();
-                            $location->x += mt_rand(0, 15);
-                            $location->y += mt_rand(0, 15);
-                            $entity = new LightningBoltEntity($location);
-                            $entity->spawnToAll();
-                        }
-                    }
-                }else{
-                    $weather->delayDuration--;
-
-                    if($weather->delayDuration < 1){
-                        $weather->startStorm();
-                    }
-                }
-                $weather->saveData();
-            }
-        }), 20);
     }
 
     public function addWeather(World $world): void{
@@ -122,14 +86,14 @@ class WeatherManager{
         }
         foreach($player as $p){
             $pk = new LevelEventPacket();
-            $pk->evid = LevelEventPacket::EVENT_STOP_RAIN;
+            $pk->evid = LevelEvent::STOP_RAIN;
             $pk->data = 0;
             $pk->position = new Vector3(0, 0, 0);
             $p->getNetworkSession()->sendDataPacket($pk);
 
             if($thunder){
                 $pk = new LevelEventPacket();
-                $pk->evid = LevelEventPacket::EVENT_STOP_THUNDER;
+                $pk->evid = LevelEvent::STOP_THUNDER;
                 $pk->data = 0;
                 $pk->position = new Vector3(0, 0, 0);
                 $p->getNetworkSession()->sendDataPacket($pk);
@@ -149,14 +113,14 @@ class WeatherManager{
         }
         foreach($player as $p){
             $pk = new LevelEventPacket();
-            $pk->evid = LevelEventPacket::EVENT_START_RAIN;
+            $pk->evid = LevelEvent::START_RAIN;
             $pk->data = 65535;
             $pk->position = new Vector3(0, 0, 0);
             $p->getNetworkSession()->sendDataPacket($pk);
 
             if($thunder){
                 $pk = new LevelEventPacket();
-                $pk->evid = LevelEventPacket::EVENT_START_THUNDER;
+                $pk->evid = LevelEvent::START_THUNDER;
                 $pk->data = 65535;
                 $pk->position = new Vector3(0, 0, 0);
                 $p->getNetworkSession()->sendDataPacket($pk);

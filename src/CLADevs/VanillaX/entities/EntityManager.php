@@ -2,15 +2,7 @@
 
 namespace CLADevs\VanillaX\entities;
 
-use CLADevs\VanillaX\entities\monster\PiglinBruteEntity;
-use CLADevs\VanillaX\entities\neutral\GoatEntity;
-use CLADevs\VanillaX\entities\object\PaintingEntity;
-use CLADevs\VanillaX\entities\passive\AxolotlEntity;
-use CLADevs\VanillaX\entities\passive\GlowSquidEntity;
-use CLADevs\VanillaX\entities\passive\StriderEntity;
-use CLADevs\VanillaX\entities\passive\VillagerEntity;
 use CLADevs\VanillaX\entities\utils\EntityIdentifierX;
-use CLADevs\VanillaX\entities\utils\villager\VillagerProfession;
 use CLADevs\VanillaX\utils\entity\CustomRegisterEntityNamesTrait;
 use CLADevs\VanillaX\utils\entity\CustomRegisterEntityTrait;
 use CLADevs\VanillaX\utils\item\NonAutomaticCallItemTrait;
@@ -38,8 +30,6 @@ class EntityManager{
     }
 
     public function startup(): void{
-        VillagerProfession::init();
-
         if(VanillaX::getInstance()->getConfig()->get("entities", true)){
             $pathList = ["object", "projectile"];
             foreach($pathList as $path){

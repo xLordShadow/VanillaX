@@ -2,8 +2,6 @@
 
 namespace CLADevs\VanillaX\entities\object;
 
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use CLADevs\VanillaX\session\Session;
 use CLADevs\VanillaX\utils\instances\InteractButtonResult;
 use CLADevs\VanillaX\utils\item\InteractButtonItemTrait;
@@ -156,16 +154,6 @@ class ArmorStandEntity extends Living implements InteractButtonItemTrait{
     public function killArmorStand(): void{
         if(!$this->isFlaggedForDespawn()){
             $this->flagForDespawn();
-
-            if(GameRuleManager::getInstance()->getValue(GameRule::DO_TILE_DROPS, $this->getWorld())){
-                $items = array_merge([ItemFactory::getInstance()->get(ItemIds::ARMOR_STAND)], $this->getArmorInventory()->getContents());
-                if(!$this->mainHand->isNull()){
-                    $items[] = $this->mainHand;
-                }
-                foreach($items as $item){
-                    $this->getWorld()->dropItem($this->getPosition()->add(0.5, 0.5, 0.5), $item);
-                }
-            }
         }
     }
 

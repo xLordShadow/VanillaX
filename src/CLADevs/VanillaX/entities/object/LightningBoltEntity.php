@@ -8,6 +8,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\Server;
 use pocketmine\world\sound\ExplodeSound;
 use pocketmine\world\World;
@@ -40,7 +41,7 @@ class LightningBoltEntity extends Entity{
             }
             $this->getWorld()->addSound($this->getPosition(), new ExplodeSound());
         }else{
-            $this->getWorld()->broadcastPacketToViewers($this->getPosition(), LevelSoundEventPacket::create(LevelSoundEventPacket::SOUND_THUNDER, $this->getPosition()));
+            $this->getWorld()->broadcastPacketToViewers($this->getPosition(), LevelSoundEventPacket::nonActorSound(LevelSoundEvent::THUNDER, $this->getPosition(), false));
         }
         --$this->age;
         if($this->age < 1){

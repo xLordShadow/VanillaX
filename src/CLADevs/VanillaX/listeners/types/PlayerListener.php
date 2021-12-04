@@ -5,8 +5,6 @@ namespace CLADevs\VanillaX\listeners\types;
 use CLADevs\VanillaX\items\types\ElytraItem;
 use CLADevs\VanillaX\items\types\ShieldItem;
 use CLADevs\VanillaX\listeners\ListenerManager;
-use CLADevs\VanillaX\world\gamerule\GameRule;
-use CLADevs\VanillaX\world\gamerule\GameRuleManager;
 use CLADevs\VanillaX\utils\item\HeldItemChangeTrait;
 use CLADevs\VanillaX\VanillaX;
 use CLADevs\VanillaX\world\weather\WeatherManager;

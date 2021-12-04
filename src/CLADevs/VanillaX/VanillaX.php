@@ -3,7 +3,6 @@
 namespace CLADevs\VanillaX;
 
 use CLADevs\VanillaX\blocks\BlockManager;
-use CLADevs\VanillaX\commands\CommandManager;
 use CLADevs\VanillaX\enchantments\EnchantmentManager;
 use CLADevs\VanillaX\entities\EntityManager;
 use CLADevs\VanillaX\inventories\InventoryManager;
