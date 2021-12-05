@@ -120,5 +120,41 @@ interface ItemIdentifiers{
     const CRACKED_NETHER_BRICKS = -303;
     const QUARTZ_BRICKS = -304;
 
+    //-305 - Unknown
+
+    const POWDER_SNOW = -306;
+    const SCULK_SENSOR = -307;
+    const POINTED_DRIPSTONE = -308; //-309, -310
+    const COPPER_ORE = -311;
+    const LIGHTNING_ROD = -312; //-313, -314, -315, -316
+    const DRIPSTONE = -317;
+    const ROOTED_DIRT = -318;
+    const HANGING_ROOTS = -319;
+    const MOSS = -320;
+    const SPORE_BLOSSOM = -321;
+    const CAVE_VINES = -322;
+    const BIG_DRIPLEAF = -323;
+    const AZALEA_LEAVES = -324;
+    const FLOWERED_AZALEA_LEAVES = -325;
+    const CALCITE = -326;
+    const AMETHYST = -327;
+    const BUDDING_AMETHYST = -328;
+    const AMETHYST_CLUSTER = -329;
+    const LARGE_AMETHYST_BUD = -330;
+    const MEDIUM_AMETHYST_BUD = -331;
+    const SMALL_AMETHYST_BUD = -332;
+    const TUFF = -333;
+    const TINTED_GLASS = -334;
+    const MOSS_CARPET = -335;
+    const SMALL_DRIPLEAF = -336;
+    const AZALEA = -337;
+    const FLOWERING_AZALEA = -338;
+    const GLOW_FRAME = -339;
+    const COPPER = -340;
+    const EXPOSED_COPPER = -341;
+    const WEATHERED_COPPER = -342;
+    const OXIDIZED_COPPER = -343;
+    const WAXED_COPPER = -344;
+
     const TIER_NETHERITE = 6;
 }

@@ -23,6 +23,7 @@ use pocketmine\block\BlockIdentifier;
 use pocketmine\block\BlockIdentifierFlattened;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\BlockToolType;
+use pocketmine\block\Carpet;
 use pocketmine\block\Door;
 use pocketmine\block\Fence;
 use pocketmine\block\FenceGate;
@@ -31,11 +32,16 @@ use pocketmine\block\Opaque;
 use pocketmine\block\Planks;
 use pocketmine\block\Slab;
 use pocketmine\block\Stair;
+use pocketmine\block\StoneButton;
+use pocketmine\block\StonePressurePlate;
 use pocketmine\block\tile\TileFactory;
 use pocketmine\block\Transparent;
 use pocketmine\block\Trapdoor;
+use pocketmine\block\Vine;
 use pocketmine\block\WallSign;
 use pocketmine\block\tile\Sign as TileSign;
+use pocketmine\block\WoodenButton;
+use pocketmine\block\WoodenPressurePlate;
 use pocketmine\inventory\CreativeInventory;
 use pocketmine\item\Item;
 use pocketmine\item\ItemIdentifier;
@@ -169,6 +175,10 @@ class BlockManager{
     //$this->registerSigns();
     $this->registerTrapdoors();
     $this->registerSlabs();
+    $this->registerButtons();
+    $this->registerPressurePlates();
+    $this->registerVines();
+    $this->registerCarpet();
 
     self::registerBlock(new Block(new BlockIdentifier(BlockLegacyIds::SLIME_BLOCK, 0), "Slime", new BlockBreakInfo(0)));
     self::registerBlock(new Block(new BlockIdentifier(BlockVanilla::ANCIENT_DEBRIS, 0, ItemIdentifiers::ANCIENT_DEBRIS), "Ancient Debris", new BlockBreakInfo(5.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 6000.0)));
@@ -187,6 +197,45 @@ class BlockManager{
     self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::NETHER_GOLD_ORE, 0, ItemIdentifiers::NETHER_GOLD_ORE), "Nether Gold Ore", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 3.0)));
     self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::CRYING_OBSIDIAN, 0, ItemIdentifiers::CRYING_OBSIDIAN), "Crying Obsidian", new BlockBreakInfo(50, BlockToolType::PICKAXE, ToolTier::DIAMOND()->getHarvestLevel(), 1200.0)));
     self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::POLISHED_BLACKSTONE, 0, ItemIdentifiers::POLISHED_BLACKSTONE), "Polished Blackstone", new BlockBreakInfo(2.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 6.0)));
+
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::CRIMSON_STEM, 0, ItemIdentifiers::CRIMSON_STEM), "Crimson Stem", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::STRIPPED_CRIMSON_STEM, 0, ItemIdentifiers::STRIPPED_CRIMSON_STEM), "Stripped Crimson Stem", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::CRIMSON_HYPHAE, 0, ItemIdentifiers::CRIMSON_HYPHAE), "Crimson Hyphae", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::STRIPPED_CRIMSON_HYPHAE, 0, ItemIdentifiers::STRIPPED_CRIMSON_HYPHAE), "Stripped Crimson Hyphae", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::WARPED_STEM, 0, ItemIdentifiers::WARPED_STEM), "Warped Stem", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::STRIPPED_WARPED_STEM, 0, ItemIdentifiers::STRIPPED_WARPED_STEM), "Stripped Warped Stem", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::WARPED_HYPHAE, 0, ItemIdentifiers::WARPED_HYPHAE), "Warped Hyphae", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::STRIPPED_WARPED_HYPHAE, 0, ItemIdentifiers::STRIPPED_WARPED_HYPHAE), "Stripped Warped Hyphae", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 10.0)));
+
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::SCULK_SENSOR, 0, ItemIdentifiers::SCULK_SENSOR), "Sculk Sensor", new BlockBreakInfo(1.5, BlockToolType::HOE, 0, 1.5)));
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::POINTED_DRIPSTONE, 0, ItemIdentifiers::POINTED_DRIPSTONE), "Pointed Dripstone", new BlockBreakInfo(1.5, BlockToolType::PICKAXE, 0, 3.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::COPPER_ORE, 0, ItemIdentifiers::COPPER_ORE), "Copper Ore", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::STONE()->getHarvestLevel(), 3.0)));
+    //TODO Create Lightning rod with changing directions
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::DRIPSTONE, 0, ItemIdentifiers::DRIPSTONE), "Dripstone", new BlockBreakInfo(1.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 1.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::ROOTED_DIRT, 0, ItemIdentifiers::ROOTED_DIRT), "Rooted Dirt", new BlockBreakInfo(0.5, BlockToolType::NONE, 0, 0.1)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::HANGING_ROOTS, 0, ItemIdentifiers::HANGING_ROOTS), "Hanging Roots", new BlockBreakInfo(0.1, BlockToolType::SHEARS)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::MOSS, 0, ItemIdentifiers::MOSS), "Moss", new BlockBreakInfo(0.1, BlockToolType::HOE)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::SPORE_BLOSSOM, 0, ItemIdentifiers::SPORE_BLOSSOM), "Spore Blossom", new BlockBreakInfo(0)));
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::BIG_DRIPLEAF, 0, BlockVanilla::BIG_DRIPLEAF), "Big Dripleaf", new BlockBreakInfo(0.1, BlockToolType::AXE)));
+    //self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::AZALEA_LEAVES, 0, BlockVanilla::AZALEA_LEAVES), "Azalea Leaves", new BlockBreakInfo(0)));
+    //self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::FLOWERED_AZALEA_LEAVES, 0, BlockVanilla::FLOWERED_AZALEA_LEAVES), "Azalea Leaves", new BlockBreakInfo(0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::CALCITE, 0, ItemIdentifiers::CALCITE), "Calcite", new BlockBreakInfo(0.75, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 0.75)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::AMETHYST, 0, ItemIdentifiers::AMETHYST), "Amethyst", new BlockBreakInfo(1.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 1.5)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::BUDDING_AMETHYST, 0, ItemIdentifiers::BUDDING_AMETHYST), "Budding Amethyst", new BlockBreakInfo(1.5, BlockToolType::PICKAXE, 0, 1.5)));
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::AMETHYST_CLUSTER, 0, ItemIdentifiers::AMETHYST_CLUSTER), "Amethyst Cluster", new BlockBreakInfo(1.5, BlockToolType::PICKAXE, 0, 1.5)));
+    //Amethyst Buds
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::TUFF, 0, ItemIdentifiers::TUFF), "Tuff", new BlockBreakInfo(1.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 6.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::TINTED_GLASS, 0, ItemIdentifiers::TINTED_GLASS), "Tinted Glass", new BlockBreakInfo(0.3)));
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::SMALL_DRIPLEAF, 0, BlockVanilla::SMALL_DRIPLEAF), "Small Dripleaf", new BlockBreakInfo(0.1, BlockToolType::AXE)));
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::AZALEA, 0, ItemIdentifiers::AZALEA), "Azalea", new BlockBreakInfo(0)));
+    self::registerBlock(new Transparent(new BlockIdentifier(BlockVanilla::FLOWERING_AZALEA, 0, ItemIdentifiers::FLOWERING_AZALEA), "Flowering Azalea", new BlockBreakInfo(0)));
+    //Glow Frame
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::COPPER, 0, ItemIdentifiers::COPPER), "Copper", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::STONE()->getHarvestLevel(), 6.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::EXPOSED_COPPER, 0, ItemIdentifiers::EXPOSED_COPPER), "Exposed Copper", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::STONE()->getHarvestLevel(), 6.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::WEATHERED_COPPER, 0, ItemIdentifiers::WEATHERED_COPPER), "Weathered Copper", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::STONE()->getHarvestLevel(), 6.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::OXIDIZED_COPPER, 0, ItemIdentifiers::OXIDIZED_COPPER), "Oxidized Copper", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::STONE()->getHarvestLevel(), 6.0)));
+    self::registerBlock(new Opaque(new BlockIdentifier(BlockVanilla::WAXED_COPPER, 0, ItemIdentifiers::WAXED_COPPER), "Waxed Copper", new BlockBreakInfo(3.0, BlockToolType::PICKAXE, ToolTier::STONE()->getHarvestLevel(), 6.0)));
   }
 
   private function registerFlowerPot(): void{
@@ -265,6 +314,33 @@ class BlockManager{
   private function registerSlabs() : void{
     self::registerBlock(new Slab(new BlockIdentifierFlattened(BlockVanilla::CRIMSON_SLAB, [BlockVanilla::CRIMSON_DOUBLE_SLAB], 0), "Crimson Slab", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 15.0)));
     self::registerBlock(new Slab(new BlockIdentifierFlattened(BlockVanilla::WARPED_SLAB, [BlockVanilla::WARPED_DOUBLE_SLAB], 0), "Warped Slab", new BlockBreakInfo(2.0, BlockToolType::AXE, 0, 15.0)));
+
+    self::registerBlock(new Slab(new BlockIdentifierFlattened(BlockVanilla::BLACKSTONE_SLAB, [BlockVanilla::BLACKSTONE_DOUBLE_SLAB], 0), "Blackstone Slab", new BlockBreakInfo(2.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 30.0)));
+    self::registerBlock(new Slab(new BlockIdentifierFlattened(BlockVanilla::POLISHED_BLACKSTONE_SLAB, [BlockVanilla::POLISHED_BLACKSTONE_DOUBLE_SLAB], 0), "Polished Blackstone Slab", new BlockBreakInfo(2.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 30.0)));
+    self::registerBlock(new Slab(new BlockIdentifierFlattened(BlockVanilla::POLISHED_BLACKSTONE_BRICK_SLAB, [BlockVanilla::POLISHED_BLACKSTONE_BRICK_DOUBLE_SLAB], 0), "Polished Blackstone Brick Slab", new BlockBreakInfo(2.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel(), 30.0)));
+  }
+
+  private function registerButtons() : void{
+    self::registerBlock(new WoodenButton(new BlockIdentifier(BlockVanilla::CRIMSON_BUTTON, 0, ItemIdentifiers::CRIMSON_BUTTON), "Crimson Button", new BlockBreakInfo(0.5, BlockToolType::AXE)));
+    self::registerBlock(new WoodenButton(new BlockIdentifier(BlockVanilla::WARPED_BUTTON, 0, ItemIdentifiers::WARPED_BUTTON), "Warped Button", new BlockBreakInfo(0.5, BlockToolType::AXE)));
+    self::registerBlock(new StoneButton(new BlockIdentifier(BlockVanilla::POLISHED_BLACKSTONE_BUTTON, 0, ItemIdentifiers::POLISHED_BLACKSTONE_BUTTON), "Polished Blackstone Button", new BlockBreakInfo(0.5, BlockToolType::PICKAXE)));
+  }
+
+  private function registerPressurePlates() : void{
+    self::registerBlock(new WoodenPressurePlate(new BlockIdentifier(BlockVanilla::CRIMSON_PRESSURE_PLATE, 0, ItemIdentifiers::CRIMSON_PRESSURE_PLATE), "Crimson Pressure Plate", new BlockBreakInfo(0.5, BlockToolType::AXE)));
+    self::registerBlock(new WoodenPressurePlate(new BlockIdentifier(BlockVanilla::WARPED_PRESSURE_PLATE, 0, ItemIdentifiers::WARPED_PRESSURE_PLATE), "Warped Pressure Plate", new BlockBreakInfo(0.5, BlockToolType::AXE)));
+
+    self::registerBlock(new StonePressurePlate(new BlockIdentifier(BlockVanilla::POLISHED_BLACKSTONE_PRESSURE_PLATE, 0, ItemIdentifiers::POLISHED_BLACKSTONE_PRESSURE_PLATE), "Polished Blackstone Pressure Plate", new BlockBreakInfo(0.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel())));
+  }
+
+  private function registerVines() : void{
+    self::registerBlock(new Vine(new BlockIdentifier(BlockVanilla::TWISTING_VINES, 0, ItemIdentifiers::TWISTING_VINES), "Twisting Vines", new BlockBreakInfo(0.2, BlockToolType::SHEARS)));
+    self::registerBlock(new Vine(new BlockIdentifier(BlockVanilla::WEEPING_VINES, 0, ItemIdentifiers::WEEPING_VINES), "Weeping Vines", new BlockBreakInfo(0.2, BlockToolType::SHEARS)));
+    self::registerBlock(new Vine(new BlockIdentifier(BlockVanilla::CAVE_VINES, 0, ItemIdentifiers::CAVE_VINES), "Cave Vines", new BlockBreakInfo(0.2, BlockToolType::SHEARS)));
+  }
+
+  private function registerCarpet() : void{
+    self::registerBlock(new Carpet(new BlockIdentifier(BlockVanilla::MOSS_CARPET, 0, ItemIdentifiers::MOSS_CARPET), "Moss Carpet", new BlockBreakInfo(0.1)));
   }
 
   public function registerBlock(Block $block, bool $override = true, bool $creativeItem = false): bool{
