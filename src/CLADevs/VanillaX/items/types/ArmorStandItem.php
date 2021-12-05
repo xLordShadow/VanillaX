@@ -20,11 +20,13 @@ class ArmorStandItem extends Item{
     }
 
     public function onInteractBlock(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): ItemUseResult{
-        $entity = new ArmorStandEntity(Location::fromObject($blockReplace->getPosition()->add(0.5, 0, 0.5), $player->getWorld()), null);
+        $location = $player->getLocation();
+        $location->x += 0.5;
+        $location->z += 0.5;
+        $entity = new ArmorStandEntity($location);
         $entity->lookAt($player->getPosition());
-        $entity->spawnToAll();
         Session::playSound($player, "mob.armor_stand.place");
         if($player->isSurvival() || $player->isAdventure()) $this->pop();
-        return true;
+        return ItemUseResult::SUCCESS();
     }
 }

@@ -47,7 +47,7 @@ use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\world\Position;
-use const pocketmine\RESOURCE_PATH;
+use const pocketmine\BEDROCK_DATA_PATH;
 
 class PacketListener implements Listener{
 
@@ -160,7 +160,7 @@ class PacketListener implements Listener{
     private function handleCraftingData(CraftingDataPacket $packet): void{
         $manager = InventoryManager::getInstance();
         $translator = ItemTranslator::getInstance();
-        $recipes = json_decode(file_get_contents(RESOURCE_PATH . "vanilla" . DIRECTORY_SEPARATOR . "recipes.json"), true);
+        $recipes = json_decode(file_get_contents(BEDROCK_DATA_PATH . "recipes.json"), true);
 
         $potionTypeRecipes = [];
         foreach($recipes["potion_type"] as $recipe){

@@ -31,11 +31,16 @@ class TridentItem extends Durable{
     public function spawnTride(Player $player): void{
         $this->applyDamage(1);
 
+        $location = $player->getLocation();
+        $location->y += $player->getEyeHeight();
+        $location->yaw = ($location->getYaw() > 180 ? 360 : 0) - $location->getYaw();
+        $location->pitch = -$location->getPitch();
+
         $diff = $player->getItemUseDuration();
         $p = $diff / 20;
         $baseForce = min((($p ** 2) + $p * 2) / 2, 1);
-        $yaw = ($player->getLocation()->yaw > 180 ? 360 : 0) - $player->getLocation()->yaw;
-        $entity = new TridentEntity(Location::fromObject($player->getPosition()->add(0, $player->getEyeHeight(), 0), $player->getWorld(), $yaw, -$player->getLocation()->pitch), $player);
+        $entity = new TridentEntity($location, $player);
+        $entity->setMotion($player->getDirectionVector());
         $entity->setParent(clone $this);
         $entity->setOwningEntity($player);
         $entity->setMotion($entity->getMotion()->multiply($baseForce * 2));

@@ -120,9 +120,7 @@ class FakeBlockInventory extends SimpleInventory implements BlockInventory{
     public function sendBlock(Player $player, Vector3 $pos, int $blockId, int $blockMeta = 0): void{
         $block = BlockFactory::getInstance()->get($blockId ,$blockMeta);
         $pk = new UpdateBlockPacket();
-        $pk->x = $pos->x;
-        $pk->y = $pos->y;
-        $pk->z = $pos->z;
+        $pk->blockPosition = BlockPosition::fromVector3($pos);
         $pk->blockRuntimeId = RuntimeBlockMapping::getInstance()->toRuntimeId($block->getFullId());
         $player->getNetworkSession()->sendDataPacket($pk);
     }
