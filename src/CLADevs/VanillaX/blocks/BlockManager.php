@@ -54,7 +54,7 @@ use pocketmine\utils\SingletonTrait;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use const pocketmine\RESOURCE_PATH;
+use const pocketmine\BEDROCK_DATA_PATH;
 
 class BlockManager{
   use SingletonTrait;
@@ -86,7 +86,7 @@ class BlockManager{
     $method = new ReflectionMethod(RuntimeBlockMapping::class, "registerMapping");
     $method->setAccessible(true);
 
-    $blockIdMap = json_decode(file_get_contents(RESOURCE_PATH . 'vanilla/block_id_map.json'), true);
+    $blockIdMap = json_decode(file_get_contents(BEDROCK_DATA_PATH . 'block_id_map.json'), true);
     $metaMap = [];
 
     foreach($instance->getBedrockKnownStates() as $runtimeId => $nbt){
@@ -343,7 +343,7 @@ class BlockManager{
     self::registerBlock(new Carpet(new BlockIdentifier(BlockVanilla::MOSS_CARPET, 0, ItemIdentifiers::MOSS_CARPET), "Moss Carpet", new BlockBreakInfo(0.1)));
   }
 
-  public function registerBlock(Block $block, bool $override = true, bool $creativeItem = false): bool{
+  public function registerBlock(Block $block, bool $override = true, bool $creativeItem = true): bool{
     if(in_array($block->getId(), VanillaX::getInstance()->getConfig()->getNested("disabled.blocks", []))){
       return false;
     }
